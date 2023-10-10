@@ -17,7 +17,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(
     cors({
-        origin: ["http://localhost:4000", "http://localhost:5174"],
+        origin: ["https://myblogs-i56i.onrender.com", "https://my-blogs-client-eps.vercel.app"],
     })
 );
 
