@@ -8,7 +8,7 @@ dotenv.config();
 import connectDB from "./db/dataBase.js";
 connectDB();
 
-import clientRoute from "../server/routes/router.js";
+import clientRoute from "./routes/router.js";
 
 const app = express();
 
