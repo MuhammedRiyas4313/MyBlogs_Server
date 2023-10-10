@@ -8,9 +8,10 @@ export const login = async (req, res, next) => {
         const { email, password } = req.body;
         let existUser = await UserModel.findOne({ email: email });
         if (!existUser) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ response: 'User not found' });
         }
-        let passwordConfirm = bcrypt.compare(password, existUser.password);
+        let passwordConfirm = await bcrypt.compare(password, existUser.password);
+        console.log(passwordConfirm, password, existUser.password)
         if (existUser && passwordConfirm) {
             let token = generateToken({ email: existUser.email, name: existUser.name });
             console.log(existUser);
@@ -30,7 +31,7 @@ export const register = async (req, res, next) => {
 
         let existUser = await UserModel.findOne({ email: email });
 
-        if (existUser) return res.status(409).json({ status: "Email is already registered!" });
+        if (existUser) return res.status(409).json({ response: "Email is already registered!" });
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
