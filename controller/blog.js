@@ -2,16 +2,12 @@ import User from "./../models/userModel.js";
 import Blog from "./../models/blogModel.js";
 import mongoose from "mongoose";
 import { Parser } from "json2csv";
-import multer from 'multer';
 import csvtojson from "csvtojson";
-import fs from "fs";
-
 
 export const getBlogs = async (req, res, next) => {
-  console.log("getBlogs");
   try {
     const response = await Blog.find().populate("author");
-    console.log(response, "blogs");
+
     res.status(202).json({ result: response });
   } catch (error) {
     res.status(500).json({ response: error.message });
@@ -59,7 +55,7 @@ export const updateBlog = async (req, res, next) => {
 export const getSingleBlog = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id, "blog id");
+
     let blogId = new mongoose.Types.ObjectId(id);
     const response = await Blog.findOne({ _id: blogId }).populate("author");
     res.status(202).json({ result: response });
@@ -96,25 +92,24 @@ export const downloadBlog = async (req, res, next) => {
 
     res.setHeader("Content-Type", "text/csv");
     res.setHeader("Content-Disposition", "attatchment: filename=blogData.csv");
-    res.send(csvData);
+    res.status(200).send(csvData);
   } catch (error) {
     res.status(500).json({ response: error.message });
   }
 };
 
 export const convertCsvToJSON = async (req, res) => {
-    try {
-        if (!req.file) {
-          return res.status(400).json({ message: 'No file uploaded' });
-        }
-    
-        const jsonData = await csvtojson().fromString(req.file.buffer.toString());
-    
-        res.setHeader("Content-Type", "text/json");
-        res.setHeader("Content-Disposition", "attatchment: filename=blogData.json");
-        res.send(jsonData);
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const jsonData = await csvtojson().fromString(req.file.buffer.toString());
+
+    res.setHeader("Content-Type", "text/json");
+    res.setHeader("Content-Disposition", "attatchment: filename=blogData.json");
+    res.status(200).send(jsonData);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 };

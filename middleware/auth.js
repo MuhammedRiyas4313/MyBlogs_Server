@@ -14,7 +14,6 @@ export const userAuth = async (req, res, next) => {
         req.user = verified;
         next();
     } catch (error) {
-        console.log(error);
         return res.status(404).json({ message: "Authentication failed: invalid token." });
     }
 };

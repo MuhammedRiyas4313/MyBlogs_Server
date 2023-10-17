@@ -11,9 +11,6 @@ const blogSchema = new mongoose.Schema(
         content: {
             type: String,
         },
-        cover: {
-            type: String,
-        },
         author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
